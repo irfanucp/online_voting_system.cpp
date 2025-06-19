@@ -1,9 +1,5 @@
-git add README.md
-git commit -m "Add profile README"
-git push origin main
-
 <div align="center">
-  <img height="150" src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGljeTVsMHcwbDIxZ3hxaTQ2azdvejhsNjJkampjcTB1YWdxaDBtNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BgKEiHf1xNV0h6IcSX/giphy.gif"  />
+  <img height="150" src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3NXBnbXd6N3Ayd3VkcG10ZmF4MGYydzZwZnloZ3huOHV1Z3pqOHQ2dCZlcD12MV9naWZzX3JlbGF0ZWQmY3Q9Zw/MD0svLSDeudszrNrp0/giphy.gif"  />
 </div>
 
 ###
@@ -22,7 +18,7 @@ git push origin main
 
 ###
 
-<h1 align="center">Hi 👋! My name is Irfan Gondal, and I'm a Web Developer </h1>
+<h1 align="center">Hi 👋! My name is Irfan Gondal, and I'm a Web Developer from</h1>
 
 ###
 
