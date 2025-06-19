@@ -1,3 +1,7 @@
+git add README.md
+git commit -m "Add profile README"
+git push origin main
+
 <div align="center">
   <img height="150" src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGljeTVsMHcwbDIxZ3hxaTQ2azdvejhsNjJkampjcTB1YWdxaDBtNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BgKEiHf1xNV0h6IcSX/giphy.gif"  />
 </div>
