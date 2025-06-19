@@ -1,0 +1,177 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include <limits>
+using namespace std;
+
+struct Voter {
+    string name;
+    string idCard;
+    string province;
+    string religion;
+    int voteChoice;
+};
+
+class VotingSystem {
+private:
+    vector<string> candidates = {
+        "Pakistan Muslim League (N)",
+        "Pakistan Tehreek-e-Insaf",
+        "Pakistan Peoples Party",
+        "Jamiat Ulema-e-Islam",
+        "Muttahida Qaumi Movement"
+    };
+
+    map<string, Voter> voterDatabase;
+    map<int, int> voteCount;
+
+    string getProvinceFromChoice(char choice) {
+        switch (tolower(choice)) {
+            case 'a': return "Punjab";
+            case 'b': return "Sindh";
+            case 'c': return "Khyber Pakhtunkhwa";
+            case 'd': return "Balochistan";
+            default: return "";
+        }
+    }
+
+    void clearInputBuffer() {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+
+public:
+    VotingSystem() {
+        for (int i = 1; i <= candidates.size(); i++) {
+            voteCount[i] = 0;
+        }
+    }
+
+    void vote() {
+        Voter v;
+        cout << "Enter your full name: ";
+        clearInputBuffer();
+        getline(cin, v.name);
+
+        cout << "Enter your CNIC (13 digits, without dashes): ";
+        cin >> v.idCard;
+
+        if (v.idCard.length() != 13 || !all_of(v.idCard.begin(), v.idCard.end(), ::isdigit)) {
+            cout << "❌ Invalid CNIC format. Must be 13 digits.\n";
+            return;
+        }
+
+        if (voterDatabase.count(v.idCard)) {
+            cout << "❌ This CNIC has already voted.\n";
+            return;
+        }
+
+        char provinceChoice;
+        cout << "Select your province:\n";
+        cout << "a. Punjab\nb. Sindh\nc. Khyber Pakhtunkhwa\nd. Balochistan\n";
+        cout << "Enter choice (a/b/c/d): ";
+        cin >> provinceChoice;
+        v.province = getProvinceFromChoice(provinceChoice);
+
+        if (v.province.empty()) {
+            cout << "❌ Invalid province selection.\n";
+            return;
+        }
+
+        cout << "Enter your religion: ";
+        cin >> v.religion;
+
+        cout << "\n--- Candidates List ---\n";
+        for (size_t i = 0; i < candidates.size(); ++i) {
+            cout << i + 1 << ". " << candidates[i] << "\n";
+        }
+
+        cout << "Enter your vote (1-" << candidates.size() << "): ";
+        int choice;
+        while (!(cin >> choice) || choice < 1 || choice > static_cast<int>(candidates.size())) {
+            cout << "❌ Invalid input. Enter number between 1-" << candidates.size() << ": ";
+            clearInputBuffer();
+        }
+
+        v.voteChoice = choice;
+        voterDatabase[v.idCard] = v;
+        voteCount[choice]++;
+
+        cout << "✅ Your vote has been submitted successfully.\n";
+    }
+
+    void viewResults(string password) {
+        if (password != "admin123") {
+            cout << "❌ Access Denied. Wrong password.\n";
+            return;
+        }
+
+        cout << "\n--- Voting Results ---\n";
+        int maxVotes = 0;
+        vector<int> winners;
+
+        for (size_t i = 0; i < candidates.size(); ++i) {
+            int count = voteCount[i + 1];
+            cout << candidates[i] << ": " << count << " votes\n";
+
+            if (count > maxVotes) {
+                maxVotes = count;
+                winners.clear();
+                winners.push_back(i + 1);
+            } else if (count == maxVotes && count != 0) {
+                winners.push_back(i + 1);
+            }
+        }
+
+        if (maxVotes == 0) {
+            cout << "No votes cast yet.\n";
+        } else if (winners.size() == 1) {
+            cout << "\n🏆 Winner: " << candidates[winners[0] - 1] << "\n";
+        } else {
+            cout << "\n🤝 It's a tie between:\n";
+            for (int winner : winners) {
+                cout << "- " << candidates[winner - 1] << "\n";
+            }
+        }
+
+        cout << "Total votes cast: " << voterDatabase.size() << "\n";
+    }
+};
+
+int main() {
+    VotingSystem vs;
+    int choice;
+
+    while (true) {
+        cout << "\n--- Pakistani Online Voting System ---\n";
+        cout << "1. Vote\n2. Admin View Results\n3. Exit\n";
+        cout << "Enter your choice: ";
+
+        if (!(cin >> choice)) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "❌ Invalid input. Enter a number.\n";
+            continue;
+        }
+
+        switch (choice) {
+            case 1:
+                vs.vote();
+                break;
+            case 2: {
+                string pass;
+                cout << "Enter admin password: ";
+                cin >> pass;
+                vs.viewResults(pass);
+                break;
+            }
+            case 3:
+                cout << "Exiting...\n";
+                return 0;
+            default:
+                cout << "❌ Invalid choice. Try again.\n";
+        }
+    }
+}
